@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Our Memory - Modern Pink</title>
+    <style>
+        :root {
+            --primary-pink: #ff7cae;
+            --soft-pink: #fff0f6;
+            --deep-rose: #5b102b;
+            --white: #ffffff;
+            --sub-text: #8e5a6d;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at top, #ffffff 0%, var(--soft-pink) 100%);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: var(--deep-rose);
+        }
+
+        #centerStage {
+            position: fixed;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -45%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+            width: min(90vw, 400px);
+        }
+
+        #centerStage.shown {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        #centerStage.leave {
+            opacity: 0;
+            transform: translate(-50%, -55%) scale(0.95);
+        }
+
+        /* กล่องเนื้อหาดีไซน์ใหม่: เน้นความคลีนแต่มีเลเยอร์ */
+        .content-box {
+            background: var(--white);
+            padding: 10px;
+            border-radius: 40px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 30px 60px rgba(112, 19, 49, 0.08);
+            position: relative;
+        }
+
+        .inner-padding {
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        /* ตกแต่งส่วนหัว */
+        .header-tag {
+            display: inline-block;
+            background: var(--soft-pink);
+            color: var(--primary-pink);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin: 0 0 25px 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--deep-rose);
+        }
+
+        /* ส่วนแสดงวิดีโอแบบไร้ขอบ (Edge-to-edge look) */
+        .video-wrap {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* ทรงจัตุรัสให้ดูโมเดิร์นเหมือน IG */
+            border-radius: 32px;
+            overflow: hidden;
+            background: #fdfdfd;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.02);
+            margin-bottom: 25px;
+        }
+
+        .video-wrap video {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        /* ข้อความบรรยาย */
+        .content-inner p {
+            margin: 0;
+            color: var(--sub-text);
+            line-height: 1.8;
+            font-size: 15.5px;
+            font-weight: 400;
+            white-space: pre-line;
+            padding: 0 10px;
+        }
+
+        /* ปุ่มย้อนกลับดีไซน์ใหม่แบบแคปซูล */
+        .controls {
+            margin-top: 30px;
+        }
+
+        .btn-next {
+            background: var(--white);
+            color: var(--deep-rose);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            box-shadow: 0 10px 20px rgba(112, 19, 49, 0.05);
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(112, 19, 49, 0.1);
+            color: var(--primary-pink);
+        }
+
+        .btn-next svg {
+            width: 18px; height: 18px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="centerStage">
+        <div class="content-box">
+            <div class="inner-padding">
+                <span class="header-tag">Personal Note</span>
+                <h1 id="slideTitle">Note 4</h1>
+
+                <div class="video-wrap">
+                    <video id="slideVideo" controls playsinline preload="metadata">
+                        <source src="vi.4.mov" type="video/mp4">
+                        <source src="vi.4.mov" type="video/quicktime">
+                    </video>
+                </div>
+
+                <div class="content-inner">
+                    <p id="slideText">เธอเป็นคนที่กินเก่งมากน่ารักขี้อ้อนแถมตามใจสุดๆเป็นคนน่ารักมากๆคนนึงเลย อยากเรียนบริหาร ม.ธรรมศาสตร์ แต่สุดท้ายก็จบที่มอรังสิต5555</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <a id="nextBtn" class="btn-next" href="dach.html">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                </svg>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const centerStage = document.getElementById('centerStage');
+        const nextBtn = document.getElementById('nextBtn');
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                centerStage.classList.add('shown');
+            }, 300);
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.button === 1) return;
+            e.preventDefault();
+            centerStage.classList.add('leave');
+            setTimeout(() => {
+                window.location.href = nextBtn.href;
+            }, 500);
+        });
+    </script>
+</body>
+</html>

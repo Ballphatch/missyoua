@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Our Memory - Minimalist</title>
+    <style>
+        :root {
+            --primary-pink: #ff7cae;
+            --soft-pink: #fff0f6;
+            --deep-rose: #5b102b;
+            --white: #ffffff;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background-color: var(--soft-pink);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            color: var(--deep-rose);
+        }
+
+        #centerStage {
+            position: fixed;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -48%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            z-index: 10;
+            opacity: 0;
+            transition: all 0.8s ease-out;
+            width: min(90vw, 420px);
+        }
+
+        #centerStage.shown {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        #centerStage.leave {
+            opacity: 0;
+            transform: translate(-50%, -52%);
+        }
+
+   
+        .content-box {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 35px;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(112, 19, 49, 0.05);
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 20px 0;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--deep-rose);
+            opacity: 0.8;
+        }
+
+
+        .video-wrap {
+            margin-bottom: 25px;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #f8f8f8;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+        }
+
+        .video-wrap video {
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+
+        .content-inner p {
+            margin: 0;
+            color: #7a3d50;
+            line-height: 1.8;
+            font-size: 15px;
+            font-weight: 400;
+            white-space: pre-line;
+            text-align: center;
+        }
+
+
+        .btn-next {
+            color: var(--deep-rose);
+            opacity: 0.6;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .btn-next:hover {
+            opacity: 1;
+            transform: translateX(-3px);
+        }
+
+        .btn-next svg {
+            width: 16px; height: 16px;
+            stroke: currentColor;
+            stroke-width: 2.5;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="centerStage">
+        <div class="content-box">
+            <h1 id="slideTitle">Note 3</h1>
+
+            <div class="video-wrap">
+                <video id="slideVideo" controls playsinline preload="metadata">
+                    <source src="vi.3.mov" type="video/mp4">
+                    <source src="vi.3.mov" type="video/quicktime">
+                </video>
+            </div>
+
+            <div class="content-inner">
+                <p id="slideText">เวลาโทรเธอจะนอนก่อนแล้วก็ตื่นก่อนด้วยโครตความสามารถ 5555 วิดีโอข้างบนเป็นวันที่เค้าดีใจปนตกใจมากเพราะว่าเธอให้แคร์แบร์มาแบบใส่ถุงมาอันบะเริ่ม555555  จะบอกว่าเค้าเก็บรักษาของที่เธอให้เค้าไว้ทุกชิ้นเลยนะ</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <a id="nextBtn" class="btn-next" href="dach.html">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                </svg>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const centerStage = document.getElementById('centerStage');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // แสดงหน้าจอเมื่อโหลดเสร็จ
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                centerStage.classList.add('shown');
+            }, 200);
+        });
+
+        // จัดการการเปลี่ยนหน้า
+        nextBtn.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.button === 1) return;
+            e.preventDefault();
+            centerStage.classList.add('leave');
+            setTimeout(() => {
+                window.location.href = nextBtn.href;
+            }, 400);
+        });
+    </script>
+</body>
+</html>

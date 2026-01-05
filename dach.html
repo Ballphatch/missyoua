@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard — Letter to you</title>
+  <style>
+    :root {
+      --bg-top: #fff0f6;
+      --bg-mid: #ffddec;
+      --bg-bottom: #ff7cae;
+      --accent-1: #ff6fa9;
+      --accent-2: #ff9acb;
+      --muted: #5b102b;
+      --radius: 24px;
+      --img-size: 170px;
+    }
+
+    html, body { height: 100%; margin: 0; overflow-x: hidden; }
+    
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--muted);
+      background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    
+    .bg-decor {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating-heart {
+      position: absolute;
+      color: white;
+      opacity: 0.5;
+      animation: floatUp var(--d) linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.6; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+   
+    .card {
+      position: relative;
+      z-index: 10;
+      width: min(850px, 98vw);
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border-radius: var(--radius);
+      padding: 40px 20px;
+      box-shadow: 0 25px 60px rgba(107, 16, 48, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 800;
+      margin: 0 0 10px 0;
+      background: linear-gradient(90deg, #ff4d94, #ff80bf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 2px 5px rgba(255, 255, 255, 0.5));
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      opacity: 0.7;
+      margin-bottom: 35px;
+      font-style: italic;
+    }
+
+    
+    .center-area {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .col {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    
+    .image-link {
+      position: relative;
+      width: var(--img-size);
+      height: var(--img-size);
+      padding: 8px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      display: inline-block;
+      overflow: visible; /* ให้ label ล้นออกมาได้ */
+    }
+
+    .image-link img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      transition: filter 0.3s ease;
+    }
+
+   
+    .image-link::after {
+      content: '🤍';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: 0.3s;
+    }
+
+    .image-link:hover {
+      transform: translateY(-12px) rotate(2deg);
+      box-shadow: 0 20px 40px rgba(255, 111, 157, 0.3);
+      z-index: 20;
+    }
+
+    .image-link:hover::after { opacity: 1; transform: scale(1.1); }
+
+    .label {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-1);
+      color: white;
+      padding: 4px 15px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 5px 15px rgba(255, 111, 157, 0.4);
+      white-space: nowrap;
+      transition: 0.3s;
+    }
+
+    .image-link:hover .label {
+      background: var(--muted);
+      transform: translateX(-50%) translateY(-5px);
+    }
+
+    
+    .col-caption {
+      margin-top: 40px;
+      font-size: 14px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.5);
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 50px;
+    }
+
+    
+    .image-link {
+      opacity: 0;
+      animation: appear 0.6s forwards;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+  
+    .image-link:nth-child(1) { animation-delay: 0.1s; }
+    .image-link:nth-child(2) { animation-delay: 0.2s; }
+    .image-link:nth-child(3) { animation-delay: 0.3s; }
+
+    @media (max-width: 600px) {
+      .col { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+      .image-link { width: 140px; height: 140px; }
+      .card { padding: 30px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-decor" id="sparkle-container"></div>
+
+  <main class="card">
+    <h1 class="hero-title">Letter to you</h1>
+    <p class="hero-subtitle">มีความทรงจำของผมอยู่ในจดหมายทุกใบ...</p>
+
+    <section class="center-area">
+      <div class="col">
+        <a class="image-link" href="pic1.html">
+          <img src="im2.png" alt="ภาพ 1">
+          <span class="label">Note 1</span>
+        </a>
+        <a class="image-link" href="pic2.html">
+          <img src="im1.jpg" alt="ภาพ 2">
+          <span class="label">Note 2</span>
+        </a>
+        <a class="image-link" href="pic3.html">
+          <img src="im3.jpg" alt="ภาพ 3">
+          <span class="label">Note 3</span>
+        </a>
+      </div>
+
+      <div class="col">
+        <a class="image-link" href="pic4.html">
+          <img src="im4.jpg" alt="ภาพ 4">
+          <span class="label">Note 4</span>
+        </a>
+        <a class="image-link" href="pic5.html">
+          <img src="im5.jpg" alt="ภาพ 5">
+          <span class="label">Note 5</span>
+        </a>
+        <a class="image-link" href="pic6.html">
+          <img src="im6.jpg" alt="ภาพ 6">
+          <span class="label">Note 6</span>
+        </a>
+      </div>
+    </section>
+
+    <p class="col-caption">คลิ๊กที่รูปเพื่ออ่านจดหมายแต่ละใบได้เลยนะ 💖</p>
+  </main>
+
+  <script>
+
+    const container = document.getElementById('sparkle-container');
+    const colors = ['#ffffff', '#ffb3d9', '#ff99c8'];
+    const icons = ['❤️', '💖', '✨', '🌸'];
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.classList.add('floating-heart');
+      heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+      heart.style.setProperty('--d', (Math.random() * 4 + 4) + 's');
+      heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+      
+      container.appendChild(heart);
+      
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
+
+    setInterval(createHeart, 600);
+  </script>
+</body>
+</html>

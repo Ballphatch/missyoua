@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Our Memory - Pink Theme</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(180deg, #fff7fb 0%, rgb(255, 220, 237) 45%, #ff9acb 100%);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #3a0b19;
+        }
+
+
+        .sparkles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+
+        #centerStage {
+            position: fixed;
+            left: 50%; top: 50%;
+            transform: translate(-50%, -40%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 60;
+            opacity: 0;
+            transition: opacity 1.2s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            width: min(92vw, 450px);
+            pointer-events: none;
+        }
+
+        #centerStage.shown {
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+        }
+
+        #centerStage.leave {
+            opacity: 0;
+            transform: translate(-50%, -48%) scale(0.96);
+            transition: all 0.5s ease-in;
+        }
+
+
+        .content-box {
+            background: rgba(255, 255, 255, 0.4);
+            padding: 30px;
+            border-radius: 40px; /* มนพิเศษดูนุ่มนวล */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(255, 154, 203, 0.25);
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        h1 {
+            margin: 0 0 15px 0;
+            font-size: 28px;
+            color: #701331;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.5);
+        }
+
+     .video-wrap {
+            margin-bottom: 20px;
+            width: 100%;
+            max-height: 35vh;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 3px solid #fff;
+            background: #000;
+        }
+
+        .video-wrap video {
+            width: 100%; height: 100%;
+            max-height: 35vh;
+            object-fit: contain;
+            display: block;
+        }
+
+
+        p {
+            margin: 0;
+            color: #52202f;
+            line-height: 1.7;
+            font-size: 15.5px;
+            white-space: pre-line;
+            text-align: center;
+            font-weight: 400;
+        }
+
+
+        .btn-next {
+            background: #fff;
+            color: #b03a66;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 35px;
+            border-radius: 100px;
+            font-weight: 700;
+            border: none;
+            box-shadow: 0 10px 25px rgba(255, 154, 203, 0.4);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-5px) scale(1.05);
+            background: #701331;
+            color: #fff;
+            box-shadow: 0 15px 30px rgba(112, 19, 49, 0.3);
+        }
+
+        .btn-next svg {
+            width: 20px; height: 20px;
+            stroke: currentColor;
+            stroke-width: 3;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+       @keyframes float {
+            0% { transform: translateY(0) rotate(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .heart {
+            position: absolute;
+            color: white;
+            font-size: 20px;
+            animation: float 6s linear infinite;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sparkles" id="sparkles"></div>
+
+    <div id="centerStage">
+        <div class="content-box">
+            <h1 id="slideTitle">Note 1</h1>
+
+            <div class="video-wrap">
+                <video id="slideVideo" controls playsinline preload="metadata">
+                    <source src="vi.1.mov" type="video/mp4">
+                    <source src="vi.1.mov" type="video/quicktime">
+                </video>
+            </div>
+
+            <div class="content-inner">
+                <p id="slideText">เรากลับมาเจอกันวันที่ 14 พฤษภาคม 2566
+                    คบกันวันที่ 6 มิถุนายน 2566
+                    เลิกกันวันที่ 10 พฤศจิกายน 2566
+                    คบกัน 6 เดือน 4 วัน
+                    มีแมว 3 ตัว: ข้าวปุ้น ข้าวจ้าว ข้าวตัง
+                    น้องสาวคนเล็กชื่อเกลว</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <a id="nextBtn" class="btn-next" href="dach.html">
+                <span>ย้อนกลับ</span>
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const centerStage = document.getElementById('centerStage');
+        const nextBtn = document.getElementById('nextBtn');
+        const sparklesContainer = document.getElementById('sparkles');
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '100vh';
+            heart.style.opacity = Math.random();
+            heart.style.fontSize = (Math.random() * 10 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            sparklesContainer.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }
+        setInterval(createHeart, 800);
+
+        window.addEventListener('load', () => {
+            centerStage.classList.add('shown');
+        });
+
+        nextBtn.addEventListener('click', (e) => {
+            if (e.metaKey || e.ctrlKey || e.button === 1) return;
+            e.preventDefault();
+            centerStage.classList.remove('shown');
+            centerStage.classList.add('leave');
+            setTimeout(() => {
+                window.location.href = nextBtn.href;
+            }, 500);
+        });
+    </script>
+</body>
+</html>

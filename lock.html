@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlock Your Heart</title>
+    <style>
+        html, body { 
+            height: 100%; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+        
+        body {
+            background: linear-gradient(180deg, #fff7fb 0%, rgb(255, 220, 237) 45%, #ff9acb 100%);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #3a0b19;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sparkles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-bg {
+            position: absolute;
+            color: white;
+            animation: float 6s linear infinite;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+
+        #centerStage { 
+            position: relative;
+            display: flex; 
+            flex-direction: row;
+            align-items: center; 
+            gap: 40px; 
+            z-index: 60;
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: opacity .9s ease, transform .9s cubic-bezier(.2, .9, .2, 1);
+        }
+        
+        #centerStage.shown { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+ 
+        #leftImage {
+            width: 280px;
+            height: auto;
+            border-radius: 30px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+        }
+
+
+        #keypadWrapper {
+            width: 300px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 35px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(255, 154, 203, 0.2);
+            text-align: center;
+        }
+
+        #codeDisplay {
+            font-size: 32px;
+            letter-spacing: 12px;
+            margin-bottom: 25px;
+            font-weight: 800;
+            color: #b03a66;
+            min-height: 40px;
+        }
+
+        #keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .key {
+            aspect-ratio: 1/1;
+            border-radius: 18px;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+            color: #701331;
+            font-weight: 700;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(176, 58, 102, 0.1);
+            transition: all 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key:active {
+            transform: translateY(3px);
+            box-shadow: none;
+            background: #ffc0dd;
+            color: white;
+        }
+
+ 
+        #alertOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        #alertBox {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 124, 174, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid #ffc0dd;
+        }
+
+        #alertBox h2 {
+            margin: 0;
+            color: #b03a66;
+            font-size: 24px;
+        }
+
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            25% {transform: translateX(-10px);}
+            75% {transform: translateX(10px);}
+        }
+        .wrong { animation: shake .4s ease; }
+        
+        @media (max-width: 700px) {
+            #centerStage { flex-direction: column; gap: 20px; top: 45%; }
+            #leftImage { width: 180px; }
+            #keypadWrapper { width: 260px; padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sparkles" id="sparkles"></div>
+
+    <div id="centerStage">
+        <img id="leftImage" src="luck.jpg" alt="ภาพประดับ">
+        <div id="keypadWrapper">
+            <div id="codeDisplay">● ● ● ● ● ●</div>
+            <div id="keypad">
+                <button class="key">1</button><button class="key">2</button><button class="key">3</button>
+                <button class="key">4</button><button class="key">5</button><button class="key">6</button>
+                <button class="key">7</button><button class="key">8</button><button class="key">9</button>
+                <button class="key special" id="clear">C</button>
+                <button class="key">0</button>
+                <button class="key special" id="back">⌫</button>
+            </div>
+            <div id="note">รหัสคือวันครบรอบนะคั้บ😁</div>
+        </div>
+    </div>
+
+    <div id="alertOverlay">
+        <div id="alertBox">
+            <h2>ขอบคุณที่ยังจำได้นะคั้บ ✨</h2>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            const correct = '060666';
+            let input = '';
+            const display = document.getElementById('codeDisplay');
+            const wrapper = document.getElementById('keypadWrapper');
+            const alertOverlay = document.getElementById('alertOverlay');
+            const alertBox = document.getElementById('alertBox');
+
+            function render(){
+                let out = [];
+                for(let i=0; i<6; i++) {
+                    out.push(i < input.length ? '❤️' : '●');
+                }
+                display.innerHTML = out.join(' ');
+            }
+
+            function checkCode() {
+                if(input === correct) {
+                    
+                    alertOverlay.style.display = 'flex';
+                    setTimeout(() => {
+                        alertOverlay.style.opacity = '1';
+                        alertBox.style.transform = 'scale(1)';
+                    }, 10);
+
+                   
+                    setTimeout(() => {
+                        window.location.href = 'dach.html';
+                    }, 2200);
+                } else {
+                    wrapper.classList.add('wrong');
+                    setTimeout(() => {
+                        input = '';
+                        render();
+                        wrapper.classList.remove('wrong');
+                    }, 800);
+                }
+            }
+
+            document.getElementById('keypad').addEventListener('click', function(e){
+                const btn = e.target.closest('button');
+                if(!btn) return;
+                if(btn.id === 'clear'){ input = ''; }
+                else if(btn.id === 'back'){ input = input.slice(0, -1); }
+                else {
+                    const v = btn.textContent.trim();
+                    if(/^[0-9]$/.test(v) && input.length < 6) input += v;
+                }
+                render();
+                if(input.length === 6) checkCode();
+            });
+
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.classList.add('heart-bg'); h.innerHTML = '❤️';
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                h.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                document.getElementById('sparkles').appendChild(h);
+                setTimeout(() => h.remove(), 6000);
+            }, 1000);
+
+            window.addEventListener('load', () => {
+                setTimeout(() => document.getElementById('centerStage').classList.add('shown'), 100);
+            });
+            render();
+        })();
+    </script>
+</body>
+</html>
